@@ -1,22 +1,30 @@
 cmake_minimum_required(VERSION 3.8)
-project(ros2_parameters)
+project(ros2_c_parameters)
 
+# Enable compiler warnings
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# find dependencies
+# Find required packages
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 
-# TODO: Add the executable target named 'param_node'
-# 1. Add executable using src/param_node.cpp
-# 2. Add dependencies (ament_target_dependencies) for rclcpp
-# 3. Install the target to the DESTINATION lib/${PROJECT_NAME}
+# Create executable
+add_executable(parameters_node src/parameters_node.cpp)
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  ament_lint_auto_find_test_dependencies()
-endif()
+# Link dependencies
+ament_target_dependencies(
+  parameters_node
+  rclcpp
+)
 
+# Install executable
+install(
+  TARGETS parameters_node
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+# Required for all ROS 2 packages
 ament_package()
+
