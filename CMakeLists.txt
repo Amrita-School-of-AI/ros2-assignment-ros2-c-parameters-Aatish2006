@@ -11,20 +11,20 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 
 # Create executable
-add_executable(parameters_node src/parameters_node.cpp)
+add_executable(param_node src/param_node.cpp)
 
 # Link dependencies
 ament_target_dependencies(
-  parameters_node
+  param_node
   rclcpp
 )
 
 # Install executable
 install(
-  TARGETS parameters_node
+  TARGETS param_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
-# Required for all ROS 2 packages
+# Required for all ROS 2 packagesSS
 ament_package()
 

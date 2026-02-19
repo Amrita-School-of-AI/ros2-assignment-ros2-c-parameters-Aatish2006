@@ -8,12 +8,11 @@ class ParamNode : public rclcpp::Node
 public:
   ParamNode() : Node("param_node")
   {
-    // Declare parameters
-    this->declare_parameter<std::string>("robot_name", "ROS2Bot");
-    this->declare_parameter<double>("max_speed", 1.5);
-    this->declare_parameter<bool>("enabled", true);
+    // Declare parameters EXACTLY as required
+    this->declare_parameter("robot_name", "ROS2Bot");
+    this->declare_parameter("max_speed", 1.5);
+    this->declare_parameter("enabled", true);
 
-    // Create timer (2000ms)
     timer_ = this->create_wall_timer(
       2000ms,
       std::bind(&ParamNode::timer_callback, this)
@@ -42,7 +41,8 @@ private:
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<ParamNode>());
+  auto node = std::make_shared<ParamNode>();
+  rclcpp::spin(node);
   rclcpp::shutdown();
   return 0;
 }
