@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>ros2_c_parameters</name>
+  <name>ros2_parameters</name>
   <version>0.0.0</version>
   <description>ROS2 C++ Parameters Assignment</description>
 

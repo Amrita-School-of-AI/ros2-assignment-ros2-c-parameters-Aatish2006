@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(ros2_c_parameters)
+project(ros2_parameters)
 
 # Enable compiler warnings
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")

@@ -1,35 +1,48 @@
 #include "rclcpp/rclcpp.hpp"
+#include <chrono>
 
-class ParametersNode : public rclcpp::Node
+using namespace std::chrono_literals;
+
+class ParamNode : public rclcpp::Node
 {
 public:
-  ParametersNode() : Node("parameters_node")
+  ParamNode() : Node("param_node")
   {
-    // Declare parameters with default values
-    this->declare_parameter<std::string>("name", "Aatish");
-    this->declare_parameter<int>("age", 20);
-    this->declare_parameter<double>("height", 5.8);
+    // Declare parameters
+    this->declare_parameter<std::string>("robot_name", "ROS2Bot");
+    this->declare_parameter<double>("max_speed", 1.5);
+    this->declare_parameter<bool>("enabled", true);
 
-    // Get parameters
-    std::string name;
-    int age;
-    double height;
-
-    this->get_parameter("name", name);
-    this->get_parameter("age", age);
-    this->get_parameter("height", height);
-
-    // Print values
-    RCLCPP_INFO(this->get_logger(), "Name: %s", name.c_str());
-    RCLCPP_INFO(this->get_logger(), "Age: %d", age);
-    RCLCPP_INFO(this->get_logger(), "Height: %.2f", height);
+    // Create timer (2000ms)
+    timer_ = this->create_wall_timer(
+      2000ms,
+      std::bind(&ParamNode::timer_callback, this)
+    );
   }
+
+private:
+  void timer_callback()
+  {
+    std::string robot_name = this->get_parameter("robot_name").as_string();
+    double max_speed = this->get_parameter("max_speed").as_double();
+    bool enabled = this->get_parameter("enabled").as_bool();
+
+    RCLCPP_INFO(
+      this->get_logger(),
+      "Robot: %s, Max Speed: %.2f, Enabled: %s",
+      robot_name.c_str(),
+      max_speed,
+      enabled ? "true" : "false"
+    );
+  }
+
+  rclcpp::TimerBase::SharedPtr timer_;
 };
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<ParametersNode>());
+  rclcpp::spin(std::make_shared<ParamNode>());
   rclcpp::shutdown();
   return 0;
 }
